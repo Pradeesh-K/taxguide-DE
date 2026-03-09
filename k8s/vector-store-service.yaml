@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: vector-store
-        image: pradeesh143/vector-store:v2
+        image: pradeesh143/vector-store:v7
         ports:
         - containerPort: 5002
         volumeMounts:

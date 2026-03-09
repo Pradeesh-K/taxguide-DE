@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: pradeesh143/flask-app:v6  # Use plain Python for dev
+        imagePullPolicy: Always
+        # command: ["python", "/app/app.py"]
+        ports:
+        - containerPort: 5000
+      #   volumeMounts:
+      #   - name: flask-app-code
+      #     mountPath: /app  # inside container
+      # volumes:
+      # - name: flask-app-code
+      #   hostPath:
+      #     path: /home/pradeesh/EdgeRAG/flask-app
+      #     type: Directory
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app
+spec:
+  selector:
+    app: flask-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

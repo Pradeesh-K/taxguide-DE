@@ -1,45 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MiniRAG Chatbot</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-        #chatbox { width: 100%; max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 20px; background: #fff; border-radius: 8px; }
-        .message { margin: 10px 0; }
-        .user { color: blue; }
-        .bot { color: green; }
-        input[type=text] { width: 80%; padding: 8px; }
-        button { padding: 8px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>TaxGuide DE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+    }
+    #chat-container {
+      flex: 0 0 60%;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+    }
+    #references {
+      flex: 0 0 35%;
+      padding: 10px;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .user {
+      background-color: #d1e7dd;
+      align-self: flex-end;
+    }
+    .bot {
+      background-color: #f8d7da;
+      align-self: flex-start;
+    }
+    #input-box {
+      display: flex;
+      margin-top: auto;
+    }
+    #input-box input {
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #input-box button {
+      padding: 8px 12px;
+      font-size: 16px;
+    }
+    h3 {
+      margin-top: 0;
+    }
+    .app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #2c3e50;
+  color: white;
+  padding: 14px 20px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.app-header p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* push main layout below header */
+body {
+  padding-top: 70px;
+}
+  </style>
 </head>
 <body>
-    <h2>MiniRAG Chatbot</h2>
-    <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="Type your question here" />
-    <button onclick="sendMessage()">Send</button>
+    <header class="app-header">
+  <h1>TaxGuide DE</h1>
+  <p>
+    A specialized AI assistant for German income tax. Get clear answers to your tax questions with direct citations from official regulations and tax law documents.
+  </p>
+</header>
+  <div id="chat-container">
+    <div id="chat-messages"></div>
+    <div id="input-box">
+      <input type="text" id="user-input" placeholder="Type your question..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <div id="references">
+    <h3>References</h3>
+    <ul id="refs-list"></ul>
+  </div>
 
-    <script>
-        async function sendMessage() {
-            const input = document.getElementById("userInput");
-            const message = input.value;
-            if (!message) return;
-            
-            // Display user message
-            const chatbox = document.getElementById("chatbox");
-            chatbox.innerHTML += `<div class="message user">You: ${message}</div>`;
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const text = input.value.trim();
+      if (!text) return;
 
-            // Call Flask API
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({question: message})
-            });
-            const data = await response.json();
-            chatbox.innerHTML += `<div class="message bot">Bot: ${data.answer}</div>`;
+      appendMessage(text, "user");
+      input.value = "";
 
-            input.value = '';
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-    </script>
+      // Call Flask chat endpoint
+      const resp = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: text })
+      });
+      const data = await resp.json();
+
+      // Show bot answer
+      appendMessage(data.answer, "bot");
+
+      // Show top chunks / references
+      const refsList = document.getElementById("refs-list");
+      refsList.innerHTML = ""; // clear previous
+      if (data.top_chunks && data.top_chunks.length > 0) {
+        data.top_chunks.forEach(chunk => {
+          const li = document.createElement("li");
+          li.textContent = `[${chunk.doc_id || "unknown"}] ${chunk.text}`;
+          refsList.appendChild(li);
+        });
+      }
+    }
+
+    function appendMessage(msg, cls) {
+      const chat = document.getElementById("chat-messages");
+      const div = document.createElement("div");
+      div.className = `message ${cls}`;
+      div.textContent = msg;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
 </body>
 </html>
