@@ -14,10 +14,11 @@ TaxGuide DE is a specialized AI assistant for **German income tax** that answers
 
 | NAME                               | CPU(cores) | MEMORY(bytes) |
 |------------------------------------|-----------:|--------------:|
-| embedding-service-ff8bffc9f-76ppq | 1m        | 392Mi         |
-| flask-app-5f65674968-tz5l2        | 2m        | 54Mi          |
 | ollama-55f9c7c5b-8skwf            | 1m        | 526Mi         |
+| embedding-service-ff8bffc9f-76ppq | 1m        | 392Mi         |
 | vector-store-745b74754b-fzwt2     | 2m        | 76Mi          |
+| flask-app-5f65674968-tz5l2        | 2m        | 54Mi          |
+
 ## Project Overview
 
 **TaxGuide DE** is a ultra light CPU-friendly RAG chatbot that combines:
