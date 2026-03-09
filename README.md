@@ -18,11 +18,11 @@ It demonstrates **ML system design, microservice orchestration, and persistent s
 
 ## Screenshots
 
-[TaxGuide_answer_with_reference](images/TaxGuide_answer_with_reference.PNG) – shows how answers include direct citations from official tax documents, making them verifiable.
+![TaxGuide_answer_with_reference](images/TaxGuide_answer_with_reference.PNG) – shows how answers include direct citations from official tax documents, making them verifiable.
 
-[TaxGuide_ask](images/TaxGuide_ask.PNG) – example of a user submitting a question to the chatbot.
+![TaxGuide_ask](images/TaxGuide_ask.PNG) – example of a user submitting a question to the chatbot.
 
-[TaxGuide_UI](images/TaxGuide_UI.PNG) – the UI has two sections: on the left, a chat interface where users ask questions; on the right, the relevant sections of the tax document used to answer the question. This design ensures answers are traceable and verifiable.
+![TaxGuide_UI](images/TaxGuide_UI.PNG) – the UI has two sections: on the left, a chat interface where users ask questions; on the right, the relevant sections of the tax document used to answer the question. This design ensures answers are traceable and verifiable.
 
 ## Architecture
 
