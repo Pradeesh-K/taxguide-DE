@@ -1,8 +1,21 @@
 # TaxGuide DE
 
-A specialized AI assistant for **German income tax**. TaxGuide DE provides **clear, contextual answers** to tax questions, with **direct citations from official regulations and law documents**. Built with a lightweight RAG (Retrieval-Augmented Generation) architecture, it runs fully on CPU-friendly infrastructure and local Kubernetes.
+TaxGuide DE is a specialized AI assistant for **German income tax** that answers user questions using relevant sections from official tax regulations and law documents. It is built with a lightweight Retrieval-Augmented Generation (RAG) architecture that retrieves relevant document chunks and generates contextual responses with verifiable citations. The system is deployed locally using Kubernetes, demonstrating how modern LLM applications can be structured and operated without heavy cloud dependencies.
 
+Focus areas of the project:
+• **Microservice architecture** – separating the system into independent services (API, embedding service, vector store, and LLM inference) to improve modularity, maintainability, and scalability.
+• **Containerized deployment** with Docker and **Kubernetes** – orchestrating multiple AI services and managing networking, service discovery, and persistent storage.
+• **Lightweight LLM deployment** – running models locally using Ollama and a vector search pipeline powered by FAISS
+• **Operational challenges of local AI systems** – addressing issues such as resource constraints, inter-service communication, and persistent storage management in a local Kubernetes environment.
 ---
+
+# Memory usage
+kubectl top pods
+NAME                                        CPU(cores)   MEMORY(bytes)   
+embedding-service-ff8bffc9f-76ppq           1m           392Mi           
+flask-app-5f65674968-tz5l2                  2m           54Mi                      
+ollama-55f9c7c5b-8skwf                      1m           526Mi           
+vector-store-745b74754b-fzwt2               2m           76Mi   
 
 ## Project Overview
 
